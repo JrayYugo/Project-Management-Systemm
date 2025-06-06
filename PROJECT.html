@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProManage Dashboard</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f9f9f9;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .sidebar .logo img {
+      width: 48px;
+      height: 48px;
+    }
+
+    .sidebar .logo span {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu button {
+      background-color: #ffffff11;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-radius: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .sidebar .menu button.active,
+    .sidebar .menu button:hover {
+      background-color: #1dd89c;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+      background-color: #fff;
+    }
+
+    .main h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #06342d;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .section .project-list {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .project-list th,
+    .project-list td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    .project-list th {
+      background-color: #f3f3f3;
+      color: #444;
+    }
+
+    .status {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .completed {
+      background-color: #e6f9f1;
+      color: #10b981;
+    }
+
+    .delayed {
+      background-color: #fff4e5;
+      color: #f59e0b;
+    }
+
+    .risk {
+      background-color: #ffe4e6;
+      color: #e11d48;
+    }
+    .project-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.project-list th, .project-list td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+
+.project-list th:nth-child(1),
+.project-list td:nth-child(1) {
+  width: 35%; /* Project Name */
+}
+
+.project-list th:nth-child(2),
+.project-list td:nth-child(2) {
+  width: 25%; /* Owner */
+}
+
+.project-list th:nth-child(3),
+.project-list td:nth-child(3) {
+  width: 20%; /* Due Date */
+}
+
+.project-list th:nth-child(4),
+.project-list td:nth-child(4) {
+  width: 20%; /* Status */
+}
+
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.status.completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status.delayed {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status.risk {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <img src="https://via.placeholder.com/48x48?text=PM" alt="Logo" />
+      <span>PROMANAGE</span>
+    </div>
+    <div class="menu">
+      <button><span>🏠</span>Dashboard</button>
+      <button><span>📁</span>Projects</button>
+      <button class="active"><span>📋</span>Board</button>
+      <button><span>🔔</span>Notification</button>
+      <button><span>👤</span>Profile</button>
+      <button><span>⚙️</span>Setting</button>
+    </div>
+  </div>
+
+  <div class="main">
+  <h1>PROJECTS</h1>
+
+  <!-- TODAY -->
+  <div class="section">
+    <h2>Today</h2>
+    <table class="project-list">
+      <tr>
+        <th>Project</th>
+        <th>Owner</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>Neisa web development</td>
+        <td>Om prakash sao</td>
+        <td>May 25, 2023</td>
+        <td><span class="status completed">Completed</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- THIS WEEK -->
+  <div class="section">
+    <h2>This Week</h2>
+    <table class="project-list">
+      <tr>
+        <th>Project</th>
+        <th>Owner</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>Datascale AI app</td>
+        <td>Neilsan mando</td>
+        <td>Jun 20, 2023</td>
+        <td><span class="status delayed">Delayed</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- NO DUE DATE -->
+  <div class="section">
+    <h2>No Due Date</h2>
+    <table class="project-list">
+      <tr>
+        <th>Project</th>
+        <th>Owner</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>Media channel branding</td>
+        <td>Tirunelv priyo</td>
+        <td>Jul 13, 2023</td>
+        <td><span class="status risk">At Risk</span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+  <script>
+    // You can add interactivity here if needed
+    const menuButtons = document.querySelectorAll('.menu button');
+    menuButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        menuButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

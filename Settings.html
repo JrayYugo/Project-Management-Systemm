@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings - ProManage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #003b2d;
+      color: white;
+      padding: 20px;
+    }
+
+    .sidebar .logo {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin: 15px 0;
+      cursor: pointer;
+    }
+
+    .sidebar li.active,
+    .sidebar li:hover {
+      color: #00c76b;
+    }
+
+    .sidebar li.danger {
+      color: #ff4b4b;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .settings h2 {
+      font-size: 22px;
+      color: #003b2d;
+    }
+
+    .panel {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 300px;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .btn {
+      padding: 8px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn.cancel {
+      background: #ccc;
+    }
+
+    .btn.danger {
+      background: #ff4b4b;
+      color: white;
+    }
+
+    .warning {
+      color: #b00020;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .modal .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 12px;
+    }
+
+    .badge.active {
+      background-color: #00c76b;
+    }
+
+    .badge.owner {
+      background-color: #0051ff;
+    }
+
+    .badge.offline {
+      background-color: #888;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table th, table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">PRO MANAGE</div>
+      <nav>
+        <ul>
+          <li class="active" onclick="showPanel('security', this)">Security</li>
+          <li onclick="showPanel('notifications', this)">Notifications</li>
+          <li onclick="showPanel('teams', this)">Teams</li>
+          <li class="danger" onclick="showPanel('delete-account', this)">Delete Account</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="settings">
+        <h2>SETTING</h2>
+        
+        <!-- SECURITY SECTION -->
+        <div class="panel active" id="security">
+          <p><strong>Sign-in Email:</strong> kmjisoo23@gmail.com</p>
+          <p><strong>Password:</strong> ••••••••• <a href="#">Change Password</a></p>
+          <p><strong>2-FA authentication:</strong> <input type="checkbox" checked /></p>
+          <p><strong>Phone number:</strong> +63 928 365 1273</p>
+          <p><strong>Profile name:</strong> Kim Jisoo</p>
+        </div>
+
+        <!-- NOTIFICATIONS SECTION -->
+        <div class="panel" id="notifications">
+          <h3>Notifications</h3>
+          <p><strong>Email Notifications</strong></p>
+          <label><input type="radio" name="email_notif" checked /> Send me email notifications</label><br>
+          <label><input type="radio" name="email_notif" /> Don’t send me email notifications</label>
+
+          <p><strong>Email News and Updates</strong></p>
+          <label><input type="checkbox" checked /> Career promotions</label><br>
+          <label><input type="checkbox" /> Research opportunities</label><br>
+          <label><input type="checkbox" /> Tips and tricks</label>
+        </div>
+
+        <!-- DELETE ACCOUNT PROMPT -->
+        <div class="panel" id="delete-account">
+          <h3>Delete Account</h3>
+          <p class="warning">
+            You are about to delete your account. This action cannot be reversed. You will no longer have access to your progress and data.
+          </p>
+          <p>
+            Make sure you have a backup of all your important data before deleting your account.
+          </p>
+          <form onsubmit="event.preventDefault(); openModal();">
+            <label>Enter password to confirm:</label><br>
+            <input type="password" placeholder="Password" /><br>
+            <button class="btn cancel" type="button" onclick="showPanel('security')">Cancel</button>
+            <button class="btn danger" type="submit">Delete Account</button>
+          </form>
+        </div>
+
+        <!-- DELETE ACCOUNT MODAL -->
+        <div class="modal" id="deleteModal">
+          <div class="modal-content">
+            <div class="icon">🗑️</div>
+            <h4>Delete Account?</h4>
+            <p>Are you sure you want to delete your account?</p>
+            <button class="btn cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn danger">Delete Account</button>
+          </div>
+        </div>
+
+        <!-- TEAMS SECTION -->
+        <div class="panel" id="teams">
+          <h3>Team members</h3>
+          <input type="text" placeholder="Search" />
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Team member</th>
+                <th>Status</th>
+                <th>Email address</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>ashley_perez</td>
+                <td><span class="badge active">Active</span></td>
+                <td>joseph.vigo@edu.com</td>
+                <td><a href="#">✏️</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>kim</td>
+                <td><span class="badge owner">Owner</span></td>
+                <td>kim@edu.com</td>
+                <td><a href="#">✏️</a></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>harvey_quemado123</td>
+                <td><span class="badge offline">Offline</span></td>
+                <td>mariel@google.com</td>
+                <td><a href="#">✏️</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function showPanel(id, el) {
+      document.querySelectorAll('.panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+
+      document.querySelectorAll('.sidebar li').forEach(li => {
+        li.classList.remove('active');
+      });
+      if (el) el.classList.add('active');
+    }
+
+    function openModal() {
+      document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

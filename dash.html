@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProManage Dashboard</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f9f9f9;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .sidebar .logo span {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu button {
+      background-color: #ffffff11;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-radius: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .sidebar .menu button.active,
+    .sidebar .menu button:hover {
+      background-color: #1dd89c;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+      background-color: #fff;
+    }
+
+    .main h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #06342d;
+    }
+
+    .cards {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 12px;
+      color: #333;
+    }
+
+    .card.yellow {
+      background: #fff7d6;
+    }
+
+    .card.green {
+      background: #e8fbe9;
+    }
+
+    .card.purple {
+      background: #f0eaff;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-list {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+
+    .project-list th,
+    .project-list td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .completed {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .delayed {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .risk {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .ongoing {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .gauge {
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      margin: auto;
+    }
+
+    .gauge .value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #e38b29;
+    }
+
+    .summary-stats {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .time-box {
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      background: #e6fffa;
+      padding: 1rem;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .time-box span {
+      color: #0f766e;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      margin-top: 2rem;
+      background-color: #06342d;
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <span>PROMANAGE</span>
+    </div>
+    <div class="menu">
+      <button><span>🏠</span>Dashboard</button>
+      <button><span>📁</span>Projects</button>
+      <button class="active"><span>📋</span>Board</button>
+      <button><span>🔔</span>Notification</button>
+      <button><span>👤</span>Profile</button>
+      <button><span>⚙️</span>Setting</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+      <div class="card yellow">
+        <strong>🔔 NOTIFICATION</strong>
+        <p>6 Unread Notifications</p>
+      </div>
+      <div class="card green">
+        <strong>📁 PROJECT</strong>
+        <p>4 Project Last Update</p>
+      </div>
+      <div class="card purple">
+        <strong>🧑‍💼 CLIENT</strong>
+        <p>6 Client Waiting</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Project Summary</h2>
+      <table class="project-list">
+        <tr>
+          <th>Project</th>
+          <th>Owner</th>
+          <th>Due Date</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Neisa web development</td>
+          <td>Om prakash sao</td>
+          <td>May 25, 2023</td>
+          <td><span class="status completed">Completed</span></td>
+        </tr>
+        <tr>
+          <td>Datascale AI app</td>
+          <td>Neilsan mando</td>
+          <td>Jun 20, 2023</td>
+          <td><span class="status delayed">Delayed</span></td>
+        </tr>
+        <tr>
+          <td>Media channel branding</td>
+          <td>Tirunelv priyo</td>
+          <td>Jul 13, 2023</td>
+          <td><span class="status risk">At Risk</span></td>
+        </tr>
+        <tr>
+          <td>Curlex iOS app development</td>
+          <td>Master bannerr</td>
+          <td>Dec 20, 2023</td>
+          <td><span class="status completed">Completed</span></td>
+        </tr>
+        <tr>
+          <td>Website builder development</td>
+          <td>Sukumar ras</td>
+          <td>Mar 15, 2024</td>
+          <td><span class="status ongoing">On going</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Overall Progress</h2>
+      <div class="gauge">
+        <div class="value">72%</div>
+        <p>Completed</p>
+        <div class="summary-stats">
+          <p>95 Total Projects</p>
+          <p>26 Completed | 35 Delayed | 35 Ongoing</p>
+        </div>
+      </div>
+
+      <div class="time-box">
+        <p>🕒 TIME IN: <span>Jun 10, 2024 — 9:41 AM</span></p>
+      </div>
+
+      <button class="logout-btn">Signout</button>
+    </div>
+  </div>
+</body>
+</html>
