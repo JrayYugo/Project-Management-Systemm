@@ -2,293 +2,634 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Settings - ProManage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+    /* Your existing CSS remains unchanged */
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f5f5f5;
-    }
-
-    .container {
+      background-color: #f5f5f5;
+      color: #333;
       display: flex;
-      min-height: 100vh;
     }
-
     .sidebar {
-      width: 220px;
-      background: #003b2d;
+      width: 250px;
+      background-color: #06342d;
       color: white;
-      padding: 20px;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
     }
-
     .sidebar .logo {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
     }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
+    .sidebar .logo i {
+      font-size: 2rem;
+      color: #1dd89c;
     }
-
-    .sidebar li {
-      margin: 15px 0;
-      cursor: pointer;
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-
-    .sidebar li.active,
-    .sidebar li:hover {
-      color: #00c76b;
-    }
-
-    .sidebar li.danger {
-      color: #ff4b4b;
-    }
-
-    .content {
-      flex: 1;
-      padding: 30px;
-    }
-
-    .settings h2 {
-      font-size: 22px;
-      color: #003b2d;
-    }
-
-    .panel {
-      background: white;
-      padding: 20px;
-      margin-top: 20px;
+    .sidebar .menu button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
       border-radius: 8px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-      display: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 500;
     }
-
+    .sidebar .menu button i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+    .sidebar .menu button:hover,
+    .sidebar .menu button.active {
+      background-color: #1dd89c;
+      color: #06342d;
+    }
+    main.content {
+      margin-left: 250px;
+      padding: 40px;
+      flex: 1;
+    }
+    h2 {
+      font-weight: 600;
+      color: #06342d;
+      margin-bottom: 1rem;
+      font-size: 3rem;
+    }
+    .settings-container {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+      transform: translateX(1.5cm);
+      max-width: calc(100% - 3.5cm);
+    }
+    .settings-menu {
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .settings-box {
+      padding: 15px 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      user-select: none;
+    }
+    .settings-box:hover {
+      background-color: #1dd89c;
+      color: white;
+    }
+    .settings-box.active {
+      background-color: #1dd89c;
+      color: #06342d;
+    }
+    .settings-panels {
+      flex: 1;
+    }
+    .panel {
+      display: none;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
     .panel.active {
       display: block;
     }
-
-    .panel h3 {
-      margin-top: 0;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-      width: 300px;
-      padding: 8px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .btn {
-      padding: 8px 15px;
-      margin-right: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .btn.cancel {
-      background: #ccc;
-    }
-
-    .btn.danger {
-      background: #ff4b4b;
-      color: white;
-    }
-
-    .warning {
-      color: #b00020;
-      font-weight: bold;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    .modal .icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
     .badge {
-      padding: 3px 8px;
-      border-radius: 4px;
-      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
       font-size: 12px;
+      color: white;
+      font-weight: 600;
     }
-
-    .badge.active {
-      background-color: #00c76b;
-    }
-
-    .badge.owner {
-      background-color: #0051ff;
-    }
-
-    .badge.offline {
-      background-color: #888;
-    }
-
+    .badge.active { background-color: #1dd89c; }
+    .badge.owner { background-color: #3498db; }
+    .badge.offline { background-color: #e74c3c; }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 15px;
+      font-size: 0.95rem;
     }
-
-    table th, table td {
+    th, td {
       padding: 10px;
       border-bottom: 1px solid #ddd;
+      text-align: left;
     }
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .warning {
+      color: #e74c3c;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+    .modal-content .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px 5px;
+      font-weight: 600;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+    }
+    .btn.cancel {
+      background-color: #ccc;
+      color: #333;
+    }
+    .btn.danger {
+      background-color: #e74c3c;
+      color: white;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    a {
+      color: #1dd89c;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .info-box {
+      display: grid;
+      grid-template-columns: 1fr 1.8fr;
+      gap: 15px 30px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-top: 15px;
+      align-items: center;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #06342d;
+      align-self: center;
+    }
+    .info-value {
+      color: #555;
+      word-break: break-word;
+      align-self: center;
+    }
+    #save-message {
+      margin-top: 10px;
+      font-weight: 600;
+      color: green;
+    }
+    .sidebar .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.menu-item {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-radius: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+.menu-item i {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.menu-item:hover {
+  background-color: rgba(29, 216, 156, 0.2);
+  transform: translateX(5px);
+}
+
+.menu-item.active {
+  background-color: #1dd89c;
+  color: #06342d;
+  font-weight: 600;
+}
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <div class="logo">PRO MANAGE</div>
-      <nav>
-        <ul>
-          <li class="active" onclick="showPanel('security', this)">Security</li>
-          <li onclick="showPanel('notifications', this)">Notifications</li>
-          <li onclick="showPanel('teams', this)">Teams</li>
-          <li class="danger" onclick="showPanel('delete-account', this)">Delete Account</li>
-        </ul>
-      </nav>
-    </aside>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      PRO MANAGE
+    </div>
+   <div class="menu">
+  <button onclick="location.href='dash.html'" class="menu-item">
+    <i class="fas fa-home"></i> Dashboard
+  </button>
+  <button onclick="location.href='PROJECT.html'" class="menu-item">
+    <i class="fas fa-folder-open"></i> Projects
+  </button>
+  <button onclick="location.href='BOARDS.html'" class="menu-item">
+    <i class="fas fa-clipboard-list"></i> Board
+  </button>
+  <button onclick="location.href='NOTIFICATION.html'" class="menu-item">
+    <i class="fas fa-bell"></i> Notification
+  </button>
+  <button onclick="location.href='PROFILE.html'" class="menu-item">
+    <i class="fas fa-user"></i> Profile
+  </button>
+  <button class="menu-item active">
+    <i class="fas fa-cog"></i> Settings
+  </button>
+</div>
 
-    <main class="content">
-      <section class="settings">
-        <h2>SETTING</h2>
-        
-        <!-- SECURITY SECTION -->
-        <div class="panel active" id="security">
-          <p><strong>Sign-in Email:</strong> kmjisoo23@gmail.com</p>
-          <p><strong>Password:</strong> ••••••••• <a href="#">Change Password</a></p>
-          <p><strong>2-FA authentication:</strong> <input type="checkbox" checked /></p>
-          <p><strong>Phone number:</strong> +63 928 365 1273</p>
-          <p><strong>Profile name:</strong> Kim Jisoo</p>
+  </div>
+
+  <main class="content">
+    <section class="settings">
+      <h2>Settings</h2>
+      <div class="settings-container">
+        <div class="settings-menu">
+          <div class="settings-box active" onclick="showPanel('security', this)">🔒 Security</div>
+          <div class="settings-box" onclick="showPanel('notifications', this)">🔔 Notifications</div>
+          <div class="settings-box" onclick="showPanel('teams', this)">👥 Teams</div>
+          <div class="settings-box" onclick="showPanel('delete-account', this)">🗑️ Delete Account</div>
         </div>
 
-        <!-- NOTIFICATIONS SECTION -->
-        <div class="panel" id="notifications">
-          <h3>Notifications</h3>
-          <p><strong>Email Notifications</strong></p>
-          <label><input type="radio" name="email_notif" checked /> Send me email notifications</label><br>
-          <label><input type="radio" name="email_notif" /> Don’t send me email notifications</label>
+        <div class="settings-panels">
+          <div class="panel active" id="security">
+            <h3>Security Settings</h3>
+            <div class="info-box">
+              <div class="info-label">Sign-in Email:</div>
+              <div class="info-value">
+                <input type="email" id="email" value="kmjisoo23@gmail.com" />
+              </div>
+              <div class="info-label">Password:</div>
+              <div class="info-value">
+                <a href="#" onclick="togglePasswordForm(event)">Change Password</a>
+                <div id="password-form" style="display:none; margin-top: 10px;">
+                  <input type="password" id="current-password" placeholder="Current Password" />
+                  <input type="password" id="new-password" placeholder="New Password" />
+                  <input type="password" id="confirm-password" placeholder="Confirm New Password" />
+                  <button class="btn" onclick="submitPasswordChange()">Submit</button>
+                  <p id="password-message" style="color: red; margin-top: 5px;"></p>
+                </div>
+              </div>
+              <div class="info-label">2-FA authentication:</div>
+              <div class="info-value">
+                <input type="checkbox" id="twofa" checked />
+              </div>
+              <div class="info-label">Phone number:</div>
+              <div class="info-value">
+                <input type="tel" id="phone" value="+63 928 365 1273" />
+              </div>
+              <div class="info-label">Profile name:</div>
+              <div class="info-value">
+                <input type="text" id="profileName" value="Kim Jisoo" />
+              </div>
+            </div>
+            <button class="btn" style="margin-top: 15px; background-color: #1dd89c; color: #06342d;" onclick="saveSecuritySettings()">Save Changes</button>
+            <p id="save-message"></p>
+          </div>
 
-          <p><strong>Email News and Updates</strong></p>
-          <label><input type="checkbox" checked /> Career promotions</label><br>
-          <label><input type="checkbox" /> Research opportunities</label><br>
-          <label><input type="checkbox" /> Tips and tricks</label>
-        </div>
+          <div class="panel" id="notifications">
+            <h3>Notifications</h3>
+            <p><strong>Email Notifications</strong></p>
+            <p>When you're busy and not online, Promanage can send you email notifications for any new direct messages or mentions of your name.</p>
+            <form>
+              <label><input type="radio" name="emailNotifications" value="all" checked /> Send me all email Notifications</label><br />
+              <label><input type="radio" name="emailNotifications" value="hourly" /> Once an hour at most</label><br />
+              <label><input type="radio" name="emailNotifications" value="never" /> Never</label>
+            </form>
+            <p style="margin-top: 20px;"><strong>Email News and updates:</strong></p>
+            <p>From time to time, we'd like to send you emails with interesting news about Promanage and your workspace. You can choose which of these updates you'd like to receive:</p>
+            <label><input type="checkbox" /> Offers promotions.</label><br />
+            <label><input type="checkbox" /> Research Opportunities.</label><br />
+            <label><input type="checkbox" /> Tips and Tricks.</label>
+          </div>
 
-        <!-- DELETE ACCOUNT PROMPT -->
-        <div class="panel" id="delete-account">
-          <h3>Delete Account</h3>
-          <p class="warning">
-            You are about to delete your account. This action cannot be reversed. You will no longer have access to your progress and data.
-          </p>
-          <p>
-            Make sure you have a backup of all your important data before deleting your account.
-          </p>
-          <form onsubmit="event.preventDefault(); openModal();">
-            <label>Enter password to confirm:</label><br>
-            <input type="password" placeholder="Password" /><br>
-            <button class="btn cancel" type="button" onclick="showPanel('security')">Cancel</button>
-            <button class="btn danger" type="submit">Delete Account</button>
-          </form>
-        </div>
+          <div class="panel" id="teams">
+            <h3>Teams</h3>
+            <div class="teams-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <input type="search" id="team-search" placeholder="Search team members..." oninput="filterTeam()" style="padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; flex: 1; max-width: 300px;" />
+              <button class="add-member" onclick="addTeamMember()" style="margin-left: auto; padding: 10px 15px; background-color: #1dd89c; color: white; border: none; border-radius: 6px; font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-left: 20px;">
+                <i class="fas fa-user-plus"></i> Add Member
+              </button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Team Member</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="team-body">
+                <tr>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Kim Jisoo" width="40" height="40" style="border-radius:50%;" />
+                      Kim Jisoo
+                    </div>
+                  </td>
+                  <td>kimjisoo@example.com</td>
+                  <td>
+                    <span class="badge active">Active</span>
+                    <button onclick="removeTeamMember(this)" style="margin-left:10px; background:#ff5c5c; color:white; border:none; border-radius:6px; padding:5px 10px; font-size:0.85rem; cursor:pointer;">Remove</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <img src="https://randomuser.me/api/portraits/men/83.jpg" alt="Alex Johnson" width="40" height="40" style="border-radius:50%;" />
+                      Alex Johnson
+                    </div>
+                  </td>
+                  <td>alex.johnson@example.com</td>
+                  <td>
+                    <span class="badge active">Active</span>
+                    <button onclick="removeTeamMember(this)" style="margin-left:10px; background:#ff5c5c; color:white; border:none; border-radius:6px; padding:5px 10px; font-size:0.85rem; cursor:pointer;">Remove</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Sophia Lee" width="40" height="40" style="border-radius:50%;" />
+                      Sophia Lee
+                    </div>
+                  </td>
+                  <td>sophia.lee@example.com</td>
+                  <td>
+                    <span class="badge offline">Offline</span>
+                    <button onclick="removeTeamMember(this)" style="margin-left:10px; background:#ff5c5c; color:white; border:none; border-radius:6px; padding:5px 10px; font-size:0.85rem; cursor:pointer;">Remove</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <!-- DELETE ACCOUNT MODAL -->
-        <div class="modal" id="deleteModal">
-          <div class="modal-content">
-            <div class="icon">🗑️</div>
-            <h4>Delete Account?</h4>
-            <p>Are you sure you want to delete your account?</p>
-            <button class="btn cancel" onclick="closeModal()">Cancel</button>
-            <button class="btn danger">Delete Account</button>
+          <div class="panel" id="delete-account">
+            <h3>Delete Account</h3>
+            <div style="background-color: #ffe6e6; padding: 20px; border-radius: 10px; border: 1px solid #ff5c5c;">
+              <p style="font-weight: bold; color: #b30000;">You are about to delete your account. This action cannot be reversed.</p>
+              <p>You will forever lose access to all your progress and data.</p>
+              <p>If you proceed, you will be unable to use this account again. This includes all access to the teams, projects from your employer's or university system, and access to private sites offered.</p>
+              <p>Please make sure you have a backup of all your important data before deleting your account.</p>
+              <hr style="margin: 15px 0;" />
+              <p><strong>If you still wish to continue and delete your account, please enter your account password:</strong></p>
+              <label for="delete-password">Password:</label>
+              <input type="password" id="delete-password" placeholder="Enter your password" style="display:block; width:100%; padding:10px; margin:10px 0 20px 0; border: 1px solid #ccc; border-radius: 6px;" />
+              <div style="display: flex; gap: 10px;">
+                <button class="btn cancel" onclick="cancelDelete()">Cancel</button>
+                <button class="btn danger" onclick="confirmPassword()">Confirm</button>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
+  </main>
 
-        <!-- TEAMS SECTION -->
-        <div class="panel" id="teams">
-          <h3>Team members</h3>
-          <input type="text" placeholder="Search" />
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Team member</th>
-                <th>Status</th>
-                <th>Email address</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>ashley_perez</td>
-                <td><span class="badge active">Active</span></td>
-                <td>joseph.vigo@edu.com</td>
-                <td><a href="#">✏️</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>kim</td>
-                <td><span class="badge owner">Owner</span></td>
-                <td>kim@edu.com</td>
-                <td><a href="#">✏️</a></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>harvey_quemado123</td>
-                <td><span class="badge offline">Offline</span></td>
-                <td>mariel@google.com</td>
-                <td><a href="#">✏️</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <div class="icon">⚠️</div>
+      <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      <button class="btn danger" onclick="deleteAccount()">Yes, Delete</button>
+      <button class="btn cancel" onclick="cancelDelete()">Cancel</button>
+    </div>
   </div>
 
   <script>
-    function showPanel(id, el) {
-      document.querySelectorAll('.panel').forEach(panel => {
-        panel.classList.remove('active');
-      });
-      document.getElementById(id).classList.add('active');
-
-      document.querySelectorAll('.sidebar li').forEach(li => {
-        li.classList.remove('active');
-      });
-      if (el) el.classList.add('active');
+    // Tab switching for settings menu
+    function showPanel(panelId, elem) {
+      document.querySelectorAll('.settings-box').forEach(box => box.classList.remove('active'));
+      elem.classList.add('active');
+      document.querySelectorAll('.panel').forEach(panel => panel.classList.toggle('active', panel.id === panelId));
     }
 
-    function openModal() {
-      document.getElementById('deleteModal').style.display = 'flex';
+    // Toggle Change Password form
+    function togglePasswordForm(e) {
+      e.preventDefault();
+      const form = document.getElementById('password-form');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      if (form.style.display === 'none') clearPasswordForm();
     }
 
-    function closeModal() {
-      document.getElementById('deleteModal').style.display = 'none';
+    // Clear password inputs and messages
+    function clearPasswordForm() {
+      document.getElementById('current-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+      document.getElementById('password-message').textContent = '';
+    }
+
+    // Submit Password Change
+    function submitPasswordChange() {
+      const current = document.getElementById('current-password').value.trim();
+      const newPass = document.getElementById('new-password').value.trim();
+      const confirmPass = document.getElementById('confirm-password').value.trim();
+      const msg = document.getElementById('password-message');
+
+      if (!current || !newPass || !confirmPass) {
+        msg.textContent = 'Please fill in all password fields.';
+        return;
+      }
+      if (newPass !== confirmPass) {
+        msg.textContent = 'New passwords do not match.';
+        return;
+      }
+      if (newPass.length < 6) {
+        msg.textContent = 'New password must be at least 6 characters.';
+        return;
+      }
+      msg.style.color = 'green';
+      msg.textContent = 'Password changed successfully!';
+      setTimeout(() => {
+        togglePasswordForm(new Event('click'));
+        msg.style.color = 'red';
+        msg.textContent = '';
+      }, 2000);
+    }
+
+    // Save security settings
+    function saveSecuritySettings() {
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const profileName = document.getElementById('profileName').value.trim();
+      const twofa = document.getElementById('twofa').checked;
+      const saveMsg = document.getElementById('save-message');
+
+      if (!validateEmail(email)) {
+        saveMsg.style.color = 'red';
+        saveMsg.textContent = 'Please enter a valid email address.';
+        return;
+      }
+      if (!phone) {
+        saveMsg.style.color = 'red';
+        saveMsg.textContent = 'Please enter a valid phone number.';
+        return;
+      }
+      if (!profileName) {
+        saveMsg.style.color = 'red';
+        saveMsg.textContent = 'Please enter a profile name.';
+        return;
+      }
+      saveMsg.style.color = 'green';
+      saveMsg.textContent = 'Security settings saved successfully!';
+      setTimeout(() => {
+        saveMsg.textContent = '';
+      }, 3500);
+    }
+
+    // Validate email
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Team filtering
+    function filterTeam() {
+      const query = document.getElementById('team-search').value.toLowerCase();
+      document.querySelectorAll('#team-body tr').forEach(row => {
+        const name = row.cells[0].innerText.toLowerCase();
+        const email = row.cells[1].innerText.toLowerCase();
+        row.style.display = name.includes(query) || email.includes(query) ? '' : 'none';
+      });
+    }
+
+    // Add team member
+    function addTeamMember() {
+      const name = prompt('Enter new member name:');
+      const email = prompt('Enter new member email:');
+      if (!name || !email) {
+        alert('Name and email are required.');
+        return;
+      }
+      const tbody = document.getElementById('team-body');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+            ${name}
+          </div>
+        </td>
+        <td>${email}</td>
+        <td>
+          <span class="badge active">Active</span>
+          <button onclick="removeTeamMember(this)" style="margin-left:10px; background:#ff5c5c; color:white; border:none; border-radius:6px; padding:5px 10px; font-size:0.85rem; cursor:pointer;">Remove</button>
+        </td>`;
+      tbody.appendChild(tr);
+    }
+
+    // Remove team member
+    function removeTeamMember(button) {
+      const row = button.closest('tr');
+      const name = row.querySelector('td').innerText.trim().split('\n')[0];
+      if (confirm(`Remove ${name} from the team?`)) {
+        row.remove();
+      }
+    }
+
+    // Delete account functions
+    function cancelDelete() {
+      document.getElementById('delete-password').value = '';
+      document.getElementById('delete-modal').style.display = 'none';
+      alert('Account deletion cancelled.');
+    }
+
+    function confirmPassword() {
+      const password = document.getElementById('delete-password').value.trim();
+      if (!password) {
+        alert('Please enter your password.');
+        return;
+      }
+      // Show the confirmation modal instead of a native confirm dialog
+      document.getElementById('delete-modal').style.display = 'flex';
+    }
+
+    function deleteAccount() {
+      const password = document.getElementById('delete-password').value.trim();
+      // Simulate password verification (replace with actual backend call)
+      if (password === "test123") {
+        alert('Your account has been deleted.');
+        document.getElementById('delete-modal').style.display = 'none';
+        document.getElementById('delete-password').value = '';
+        // Add backend deletion logic here, e.g., fetch('/api/deleteAccount', { method: 'POST', body: JSON.stringify({ password }) })
+      } else {
+        alert('Incorrect password. Try again.');
+        document.getElementById('delete-modal').style.display = 'none';
+      }
     }
   </script>
 </body>

@@ -1,183 +1,264 @@
 <!doctype html>
 <html lang="en"> 
  <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
   <title>Sign Up</title> 
+
+  <!-- Poppins font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome CDN for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
   <style>
-  * {
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-  body {
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-image: linear-gradient(to top, #ffffff 80%, #35d3a3 95%);
-    position: relative;
-  }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f9f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: linear-gradient(to top, #e6fff8 80%, #35d3a3 95%);
+      position: relative;
+      color: #253238;
+    }
 
-  .container {
-    width: 100%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    z-index: 1;
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-    color: #253238;
-  }
-
-  p {
-    color: #4f4f4f;
-    margin-bottom: 1.25rem;
-    font-size: 1rem;
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #144c5177;
-    color: white;
-    font-size: 1rem;
-  }
-
-  input::placeholder {
-    color: #f0f0f0;
-  }
-
-  input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #10b98188;
-  }
-
-  .btn {
-    background-color: #224957;
-    color: white;
-    border: none;
-    padding: 0.9rem;
-    font-size: 1rem;
-    width: 100%;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    font-weight: bold;
-  }
-
-  .btn:hover {
-    background-color: #14bb84;
-    transform: translateY(-2px);
-  }
-
-  .error {
-    color: red;
-    font-size: 0.85rem;
-    margin-top: 0.4rem;
-    display: none;
-  }
-
-  .footer-wave {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background: linear-gradient(to right, #35d3a3, #1dd89c);
-    clip-path: ellipse(70% 100% at 50% 100%);
-  }
-
-  @media (min-width: 768px) {
     .container {
-      max-width: 460px;
-      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 1.5rem 2rem 2rem; /* Reduced vertical padding */
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      z-index: 1;
     }
 
     h2 {
-      font-size: 2.2rem;
+      font-size: 2rem;  /* Smaller heading */
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f3d3e;
     }
 
     p {
-      font-size: 1.1rem;
+      color: #53636d;
+      margin-bottom: 1.5rem; /* Reduced bottom margin */
+      font-size: 1rem; /* Smaller paragraph */
+      font-weight: 500;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1rem; /* Reduced spacing between inputs */
+      text-align: left;
     }
 
     input[type="text"],
     input[type="password"] {
-      font-size: 1.1rem;
-      padding: 0.9rem 1rem;
+      width: 100%;
+      padding: 0.6rem 3rem 0.6rem 1.25rem; /* Smaller vertical padding */
+      border: 2px solid #d2e6df;
+      border-radius: 15px;
+      background-color: #e6f7f1;
+      color: #0f3d3e;
+      font-size: 1rem; /* Smaller font size */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-weight: 500;
+    }
+
+    input::placeholder {
+      color: #92b8af;
+      font-weight: 400;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #35d3a3;
+      box-shadow: 0 0 8px #35d3a3aa;
+      background-color: #d7f2e8;
+    }
+
+    /* Icon inside input */
+    .form-group .fa-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #92b8af;
+      font-size: 1.2rem;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    input:focus + .fa-icon {
+      color: #35d3a3;
     }
 
     .btn {
-      font-size: 1.1rem;
-      padding: 1rem;
+      background: linear-gradient(135deg, #27c5a0, #14bb84);
+      color: white;
+      border: none;
+      padding: 0.8rem 0; /* Smaller button height */
+      font-size: 1rem; /* Smaller font */
+      width: 100%;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      box-shadow: 0 5px 15px #14bb8433;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #14bb84, #0f8862);
+      box-shadow: 0 8px 20px #14bb8455;
+      transform: translateY(-3px);
     }
 
     .error {
+      color: #e04f5f;
       font-size: 0.9rem;
+      margin-top: 0.35rem;
+      display: none;
+      font-weight: 600;
     }
-  }
-</style>
 
+    /* Red border on error */
+    input.error-input {
+      border-color: #e04f5f !important;
+      background-color: #fdecec !important;
+      box-shadow: 0 0 8px #e04f5f88 !important;
+    }
+
+    .footer-wave {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(to right, #35d3a3, #1dd89c);
+      clip-path: ellipse(70% 100% at 50% 100%);
+      z-index: 0;
+    }
+
+    /* Link for existing users */
+    .existing-account {
+      margin-top: 1.75rem;
+      font-size: 0.95rem;
+      color: #53636d;
+      font-weight: 500;
+    }
+
+    .existing-account a {
+      color: #35d3a3;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .existing-account a:hover {
+      color: #14bb84;
+      text-decoration: underline;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 480px;
+        padding: 2rem 2.5rem 2.5rem; /* Adjusted for larger screens */
+      }
+
+      h2 {
+        font-size: 2.4rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        font-size: 1.1rem;
+        padding: 0.8rem 3.5rem 0.8rem 1.5rem;
+      }
+
+      .btn {
+        font-size: 1.1rem;
+        padding: 1rem 0;
+      }
+
+      .error {
+        font-size: 1rem;
+      }
+    }
+  </style>
  </head> 
  <body> 
   <div class="container"> 
    <h2>Sign Up</h2> 
    <p>Create Your Account!</p> 
- <form id="signupForm" action="SIGNUP.php" method="POST">
-  <div class="form-group"> 
-    <input type="text" id="name" name="name" placeholder="Name" required>
-  </div>
-  <div class="form-group"> 
-    <input type="text" id="username" name="username" placeholder="Username" required> 
-  </div> 
-  <div class="form-group"> 
-    <input type="password" id="password" name="password" placeholder="Password" required>
-  </div> 
-  <div class="form-group"> 
-    <input type="password" id="confirmPassword" placeholder="Confirm Password" required> 
-    <div id="passwordError" class="error">Passwords do not match</div> 
-  </div> 
-  <button type="submit" class="btn">Create</button> 
-</form>
+   <form id="signupForm" action="SIGNUP.php" method="POST" novalidate>
+     <div class="form-group"> 
+       <input type="text" id="name" name="name" placeholder="Name" required autocomplete="name" />
+       <i class="fa fa-user fa-icon"></i>
+     </div>
+     <div class="form-group"> 
+       <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username" />
+       <i class="fa fa-user-circle fa-icon"></i>
+     </div> 
+     <div class="form-group"> 
+       <input type="password" id="password" name="password" placeholder="Password" required autocomplete="new-password" />
+       <i class="fa fa-lock fa-icon"></i>
+     </div> 
+     <div class="form-group"> 
+       <input type="password" id="confirmPassword" placeholder="Confirm Password" required autocomplete="new-password" />
+       <i class="fa fa-lock fa-icon"></i>
+       <div id="passwordError" class="error">Passwords do not match</div> 
+     </div> 
+     <button type="submit" class="btn">Create</button> 
+   </form>
 
+   <div class="existing-account">
+     Already have an account? <a href="login.html">Log in</a>
+   </div>
   </div> 
+
   <div class="footer-wave"></div> 
+
   <script>
     const form = document.getElementById('signupForm');
     const password = document.getElementById('password');
     const confirmPassword = document.getElementById('confirmPassword');
     const error = document.getElementById('passwordError');
 
-   form.addEventListener('submit', function (e) {
-  if (password.value !== confirmPassword.value) {
-    e.preventDefault();
-    error.style.display = 'block';
-    confirmPassword.style.border = '2px solid red';
-  } else {
-    error.style.display = 'none';
-    // ✅ Do NOT prevent default here!
-    // Let the form submit to SIGNUP.php
-  }
-});
+    form.addEventListener('submit', function (e) {
+      if (password.value !== confirmPassword.value) {
+        e.preventDefault();
+        error.style.display = 'block';
+        confirmPassword.classList.add('error-input');
+      } else {
+        error.style.display = 'none';
+        confirmPassword.classList.remove('error-input');
+      }
+    });
 
+    confirmPassword.addEventListener('input', () => {
+      if (confirmPassword.value === password.value) {
+        error.style.display = 'none';
+        confirmPassword.classList.remove('error-input');
+      }
+    });
   </script> 
  </body>
 </html>

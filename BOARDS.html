@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Board - ProManage</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Existing styles unchanged */
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f4f7f9;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+    }
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      color: #1dd89c;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu a {
+      background-color: transparent;
+      color: white;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-radius: 8px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar .menu a i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar .menu a:hover,
+    .sidebar .menu a.active {
+      background-color: #1dd89c;
+      color: #06342d;
+    }
+
+    .main {
+      margin-left: 250px;
+      flex: 1;
+      padding: 2rem 4rem;
+    }
+
+    .main h1 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      color: #06342d;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar input {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 300px;
+    }
+
+    .section {
+      margin-top: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      color: #000;
+      margin-bottom: 1rem;
+    }
+
+    .project-box {
+      background-color: #e0e0e0;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-icon {
+      font-size: 2rem;
+      color: #000;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .project-details h3 {
+      font-size: 1.25rem;
+      color: #000;
+      margin: 0;
+    }
+
+    .project-details p {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.4;
+      margin-top: 0.5rem;
+      white-space: pre-wrap;
+    }
+
+    .done-btn {
+      background-color: #1dd89c;
+      color: #06342d;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .done-btn:hover {
+      background-color: #17c390;
+    }
+
+    .deadline {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .progress-container {
+      margin-top: 0.5rem;
+      background-color: #d0d0d0;
+      border-radius: 8px;
+      height: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background-color: #1dd89c;
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+      color: #06342d;
+      font-weight: 600;
+    }
+
+    /* New styles for Create Task form */
+    .create-task-form {
+      background: #e0e0e0;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .create-task-form h2 {
+      margin-bottom: 1rem;
+      color: #06342d;
+    }
+
+    .create-task-form label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #06342d;
+    }
+
+    .create-task-form input[type="text"],
+    .create-task-form input[type="date"],
+    .create-task-form textarea {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    .create-task-form button {
+      background-color: #1dd89c;
+      color: #06342d;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .create-task-form button:hover {
+      background-color: #17c390;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      PRO MANAGE
+    </div>
+    <div class="menu">
+      <a href="dash.html"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="PROJECT.html"><i class="fas fa-folder-open"></i> Projects</a>
+      <a href="BOARDS.html" class="active"><i class="fas fa-clipboard-list"></i> Board</a>
+      <a href="NOTIFICATION.html"><i class="fas fa-bell"></i> Notification</a>
+      <a href="PROFILE.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="Settings.html"><i class="fas fa-cog"></i> Setting</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Board</h1>
+
+    <!-- Create Task Form -->
+    <form class="create-task-form" id="createTaskForm">
+      <h2>Create New Task</h2>
+
+      <label for="taskTitle">Task Title</label>
+      <input type="text" id="taskTitle" name="taskTitle" required placeholder="Enter task title" />
+
+      <label for="taskInfo">Task Info / Description</label>
+      <textarea id="taskInfo" name="taskInfo" rows="4" required placeholder="Enter task details"></textarea>
+
+      <label for="deadline">Deadline</label>
+      <input type="date" id="deadline" name="deadline" required />
+
+      <label for="assignedUser">Assign to User ID</label>
+      <input type="text" id="assignedUser" name="assignedUser" required placeholder="Enter user ID" />
+
+      <button type="submit">Create Task</button>
+    </form>
+
+    <div class="top-bar">
+      <div class="search-bar">
+        <input type="text" placeholder="Search task..." id="searchInput" />
+      </div>
+    </div>
+
+    <!-- Projects Assigned Section -->
+    <div class="section" id="projectsSection">
+      <h2>Projects Assigned</h2>
+
+      <!-- Existing tasks here (unchanged) -->
+      <div class="project-box">
+        <button class="done-btn">Mark as Done</button>
+        <div class="project-header">
+          <div class="project-icon"><i class="fas fa-tasks"></i></div>
+          <div class="project-details">
+            <h3>Website Redesign for a Small Business</h3>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>
+            <strong>Objective:</strong><br>
+            Manage the full process of redesigning a company's website to improve user experience, branding, and mobile compatibility.<br>
+            <strong>Scope:</strong><br>
+            Coordinate tasks such as stakeholder interviews, wireframe development, content updates, design testing, and launch.<br>
+            <strong>Key Deliverables:</strong><br>
+            Project Scope Statement<br>
+            Stakeholder Analysis<br>
+            WBS and Timeline<br>
+            Risk Register<br>
+            Progress Reports<br>
+            Final Presentation with before-and-after visuals<br>
+            <strong>Industry Focus:</strong> Digital/Tech<br>
+            <strong>Tools:</strong> Figma, Trello/Asana, Google Docs.
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> July 12, 2025</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 65%;"></div>
+          </div>
+          <span class="progress-text">65%</span>
+        </div>
+      </div>
+
+      <div class="project-box">
+        <button class="done-btn">Mark as Done</button>
+        <div class="project-header">
+          <div class="project-icon"><i class="fas fa-tasks"></i></div>
+          <div class="project-details">
+            <h3>Mobile App Launch for Startup</h3>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>
+            <strong>Objective:</strong><br>
+            Lead the development and marketing launch of a new mobile app targeting young professionals.<br>
+            <strong>Scope:</strong><br>
+            Manage design, development sprints, QA testing, app store submission, and launch campaigns.<br>
+            <strong>Key Deliverables:</strong><br>
+            Product Roadmap<br>
+            User Stories<br>
+            Beta Feedback Reports<br>
+            Marketing Plan<br>
+            Launch Event<br>
+            <strong>Industry Focus:</strong> Tech Startup<br>
+            <strong>Tools:</strong> Jira, Slack, Google Analytics.
+          </p>
+          <p class="deadline"><strong>Deadline:</strong> August 5, 2025</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 40%;"></div>
+          </div>
+          <span class="progress-text">40%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search filter function
+    const searchInput = document.getElementById('searchInput');
+    const projectsSection = document.getElementById('projectsSection');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+      const projects = projectsSection.querySelectorAll('.project-box');
+
+      projects.forEach(project => {
+        const title = project.querySelector('.project-details h3').textContent.toLowerCase();
+        const description = project.querySelector('.project-details p').textContent.toLowerCase();
+        if (title.includes(query) || description.includes(query)) {
+          project.style.display = 'block';
+        } else {
+          project.style.display = 'none';
+        }
+      });
+    });
+
+    // Create Task form submission handler
+    const createTaskForm = document.getElementById('createTaskForm');
+
+    createTaskForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Get form values
+      const title = document.getElementById('taskTitle').value.trim();
+      const info = document.getElementById('taskInfo').value.trim();
+      const deadline = document.getElementById('deadline').value;
+      const assignedUser = document.getElementById('assignedUser').value.trim();
+
+      if (!title || !info || !deadline || !assignedUser) {
+        alert('Please fill all fields.');
+        return;
+      }
+
+      // Create new project box element
+      const projectBox = document.createElement('div');
+      projectBox.classList.add('project-box');
+
+      projectBox.innerHTML = `
+        <button class="done-btn">Mark as Done</button>
+        <div class="project-header">
+          <div class="project-icon"><i class="fas fa-tasks"></i></div>
+          <div class="project-details">
+            <h3>${title} <small style="font-weight: normal; font-size: 0.8rem; color:#555;">(Assigned to User ID: ${assignedUser})</small></h3>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>${info.replace(/\n/g, '<br>')}</p>
+          <p class="deadline"><strong>Deadline:</strong> ${new Date(deadline).toLocaleDateString()}</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 0%;"></div>
+          </div>
+          <span class="progress-text">0%</span>
+        </div>
+      `;
+
+      // Append the new task to the projects section
+      projectsSection.appendChild(projectBox);
+
+      // Reset form
+      createTaskForm.reset();
+
+      // Scroll to the new task
+      projectBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+</body>
+</html>
