@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+
+  <!-- Poppins font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome CDN for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f9f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: linear-gradient(to top, #e6fff8 80%, #35d3a3 95%);
+      position: relative;
+      color: #253238;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 1.5rem 2rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      z-index: 1;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #0f3d3e;
+    }
+
+    p {
+      color: #53636d;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.6rem 3rem 0.6rem 1.25rem;
+      border: 2px solid #d2e6df;
+      border-radius: 15px;
+      background-color: #e6f7f1;
+      color: #0f3d3e;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-weight: 500;
+    }
+
+    input::placeholder {
+      color: #92b8af;
+      font-weight: 400;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #35d3a3;
+      box-shadow: 0 0 8px #35d3a3aa;
+      background-color: #d7f2e8;
+    }
+
+    /* Icons inside inputs */
+    .form-group .fa-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #92b8af;
+      font-size: 1.2rem;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    input:focus + .fa-icon {
+      color: #35d3a3;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #27c5a0, #14bb84);
+      color: white;
+      border: none;
+      padding: 0.8rem 0;
+      font-size: 1rem;
+      width: 100%;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      box-shadow: 0 5px 15px #14bb8433;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #14bb84, #0f8862);
+      box-shadow: 0 8px 20px #14bb8455;
+      transform: translateY(-3px);
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #53636d;
+      font-weight: 500;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .options input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+      border: 2px solid #35d3a3;
+      cursor: pointer;
+      appearance: none;
+      background-color: #e6f7f1;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+    .options input[type="checkbox"]:checked {
+      background-color: #35d3a3;
+      border-color: #35d3a3;
+    }
+
+    .options input[type="checkbox"]:checked::after {
+      content: "\f00c"; /* FontAwesome check */
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      top: 1px;
+      left: 3px;
+      font-size: 11px;
+      color: white;
+    }
+
+    .options a {
+      color: #35d3a3;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .options a:hover {
+      color: #14bb84;
+      text-decoration: underline;
+    }
+
+    .footer-wave {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(to right, #35d3a3, #1dd89c);
+      clip-path: ellipse(70% 100% at 50% 100%);
+      z-index: 0;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 480px;
+        padding: 2rem 2.5rem 2.5rem;
+      }
+
+      h2 {
+        font-size: 2.4rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        font-size: 1.1rem;
+        padding: 0.8rem 3.5rem 0.8rem 1.5rem;
+      }
+
+      .btn {
+        font-size: 1.1rem;
+        padding: 1rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign in</h2>
+    <p>Start managing your projects</p>
+    <form id="loginForm" action="LOGIN.php" method="POST" novalidate>
+      <div class="form-group">
+        <input type="text" id="login" name="username" placeholder="Login" required autocomplete="username" />
+        <i class="fa fa-user fa-icon"></i>
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPassword" name="password" placeholder="Password" required autocomplete="current-password" />
+        <i class="fa fa-lock fa-icon"></i>
+      </div>
+      <div class="options">
+        <label><input type="checkbox" id="remember" /> Remember me</label>
+        <a href="signup.html">Create Account</a>
+      </div>
+     <button type="button" class="btn" onclick="window.location.href='dash.html'">Login</button>
+
+    </form>
+  </div>
+
+  <div class="footer-wave"> </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function (e) {
+      const user = document.getElementById('login').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+
+      if (!user || !pass) {
+        e.preventDefault();
+        alert("Please fill in all fields.");
+      }
+    });
+  </script>
+</body>
+</html>

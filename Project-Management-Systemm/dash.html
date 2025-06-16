@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProManage Dashboard</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f4f7f9;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+    }
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      color: #1dd89c;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu .menu-btn {
+      background-color: transparent;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-radius: 8px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .sidebar .menu .menu-btn i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar .menu .menu-btn:hover,
+    .sidebar .menu .menu-btn.active {
+      background-color: #1dd89c;
+      color: #06342d;
+    }
+
+    .main {
+      margin-left: 250px;
+      flex: 1;
+      padding: 2rem 4rem;
+    }
+
+    .main h1 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      color: #06342d;
+    }
+
+    .cards {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 200px;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card i {
+      margin-right: 0.5rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .project-list {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .project-list th,
+    .project-list td {
+      text-align: left;
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .project-list th {
+      background: #f0f4f8;
+    }
+
+    .status {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .completed {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .delayed {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .risk {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .ongoing {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .gauge {
+      max-width: 400px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .gauge .value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #e38b29;
+    }
+
+    .summary-stats {
+      margin-top: 1rem;
+      color: #333;
+    }
+
+    .time-box {
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      background: #e6fffa;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      display: inline-block;
+      color: #0f766e;
+    }
+
+    .time-box i {
+      margin-right: 0.5rem;
+    }
+
+    .logout-btn {
+      margin-top: 2rem;
+      background-color: #1dd89c;
+      color: #06342d;
+      padding: 0.7rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .logout-btn:hover {
+      background-color: #17c390;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      PRO MANAGE
+    </div>
+    <div class="menu">
+      <a href="dash.html" class="menu-btn active"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="PROJECT.html" class="menu-btn"><i class="fas fa-folder-open"></i> Projects</a>
+      <a href="BOARDS.html" class="menu-btn"><i class="fas fa-clipboard-list"></i> Board</a>
+      <a href="NOTIFICATION.html" class="menu-btn"><i class="fas fa-bell"></i> Notification</a>
+      <a href="PROFILE.html" class="menu-btn"><i class="fas fa-user"></i> Profile</a>
+      <a href="Settings.html" class="menu-btn"><i class="fas fa-cog"></i> Setting</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+      <div class="card">
+        <strong><i class="fas fa-bell"></i> Notification</strong>
+        <p>6 Unread Notifications</p>
+      </div>
+      <div class="card">
+        <strong><i class="fas fa-folder"></i> Project</strong>
+        <p>4 Project Last Update</p>
+      </div>
+      <div class="card">
+        <strong><i class="fas fa-user-tie"></i> Client</strong>
+        <p>6 Client Waiting</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Project Summary</h2>
+      <table class="project-list">
+        <tr>
+          <th>Project</th>
+          <th>Owner</th>
+          <th>Due Date</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Neisa web development</td>
+          <td>Om prakash sao</td>
+          <td>May 25, 2023</td>
+          <td><span class="status completed">Completed</span></td>
+        </tr>
+        <tr>
+          <td>Datascale AI app</td>
+          <td>Neilsan mando</td>
+          <td>Jun 20, 2023</td>
+          <td><span class="status delayed">Delayed</span></td>
+        </tr>
+        <tr>
+          <td>Media channel branding</td>
+          <td>Tirunelv priyo</td>
+          <td>Jul 13, 2023</td>
+          <td><span class="status risk">At Risk</span></td>
+        </tr>
+        <tr>
+          <td>Curlex iOS app development</td>
+          <td>Master bannerr</td>
+          <td>Dec 20, 2023</td>
+          <td><span class="status completed">Completed</span></td>
+        </tr>
+        <tr>
+          <td>Website builder development</td>
+          <td>Sukumar ras</td>
+          <td>Mar 15, 2024</td>
+          <td><span class="status ongoing">On going</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Overall Progress</h2>
+      <div class="gauge">
+        <div class="value">72%</div>
+        <p>Completed</p>
+        <div class="summary-stats">
+          <p>95 Total Projects</p>
+          <p>26 Completed | 35 Delayed | 35 Ongoing</p>
+        </div>
+      </div>
+
+      <div class="time-box">
+        <i class="fas fa-clock"></i> TIME IN: <strong>Jun 10, 2024 — 9:41 AM</strong>
+      </div>
+
+      <br />
+      <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar active class toggle
+    const buttons = document.querySelectorAll('.menu .menu-btn');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

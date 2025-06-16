@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Board - ProManage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+    
+    body { display: flex; min-height: 100vh; background: linear-gradient(135deg, #f4f7f9 0%, #e8f4f8 100%); }
+    
+    .sidebar {
+      width: 250px; background: linear-gradient(145deg, #06342d, #0a4738); color: white; padding: 2rem 1rem;
+      display: flex; flex-direction: column; align-items: center; position: fixed; top: 0; bottom: 0; left: 0;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    }
+    
+    .sidebar .logo { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 600; margin-bottom: 3rem; }
+    .sidebar .logo i { font-size: 2rem; color: #1dd89c; }
+    
+    .sidebar .menu { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
+    .sidebar .menu a {
+      background: transparent; color: white; padding: 0.75rem 1rem; text-align: left; border-radius: 12px;
+      font-size: 1rem; display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .sidebar .menu a::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(29,216,156,0.1), transparent);
+      transition: left 0.5s;
+    }
+    .sidebar .menu a:hover::before { left: 100%; }
+    .sidebar .menu a i { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar .menu a:hover, .sidebar .menu a.active {
+      background: linear-gradient(135deg, #1dd89c, #17c390); color: #06342d; transform: translateX(5px);
+    }
+    
+    .main { margin-left: 250px; flex: 1; padding: 2rem 4rem; }
+    .main h1 { font-size: 2.5rem; margin-bottom: 2rem; color: #06342d; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+    
+    .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; }
+    .search-container { position: relative; flex: 1; max-width: 400px; }
+    .search-container input {
+      width: 100%; padding: 0.75rem 1rem 0.75rem 3rem; border-radius: 25px; border: 2px solid #e0e0e0;
+      font-size: 1rem; transition: all 0.3s ease; background: rgba(255,255,255,0.9);
+    }
+    .search-container input:focus { border-color: #1dd89c; outline: none; box-shadow: 0 0 0 3px rgba(29,216,156,0.1); }
+    .search-container i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #888; }
+    
+    .filter-buttons { display: flex; gap: 0.5rem; }
+    .filter-btn {
+      padding: 0.5rem 1rem; border: 2px solid #1dd89c; background: transparent; color: #1dd89c;
+      border-radius: 20px; cursor: pointer; transition: all 0.3s ease; font-weight: 600;
+    }
+    .filter-btn:hover, .filter-btn.active { background: #1dd89c; color: white; }
+    
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: linear-gradient(135deg, #fff, #f8f9fa); padding: 1rem; border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s ease;
+    }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-card h3 { font-size: 2rem; color: #1dd89c; margin-bottom: 0.5rem; }
+    .stat-card p { color: #666; font-weight: 600; }
+    
+    .create-task-form {
+      background: linear-gradient(135deg, #fff, #f8f9fa); padding: 2rem; border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 2rem; max-width: 800px;
+      margin-left: auto; margin-right: auto; border: 1px solid rgba(29,216,156,0.1);
+    }
+    .create-task-form h2 { margin-bottom: 1.5rem; color: #06342d; font-size: 1.8rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .create-task-form label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #06342d; }
+    .create-task-form input, .create-task-form textarea, .create-task-form select {
+      width: 100%; padding: 0.75rem 1rem; border-radius: 12px; border: 2px solid #e0e0e0;
+      font-family: 'Poppins', sans-serif; font-size: 1rem; transition: all 0.3s ease;
+    }
+    .create-task-form input:focus, .create-task-form textarea:focus, .create-task-form select:focus {
+      border-color: #1dd89c; outline: none; box-shadow: 0 0 0 3px rgba(29,216,156,0.1);
+    }
+    .create-task-form button {
+      background: linear-gradient(135deg, #1dd89c, #17c390); color: white; border: none;
+      padding: 1rem 2rem; border-radius: 12px; font-weight: bold; cursor: pointer;
+      transition: all 0.3s ease; font-size: 1rem; width: 100%;
+    }
+    .create-task-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(29,216,156,0.3); }
+    
+    .section h2 { font-size: 1.8rem; color: #06342d; margin-bottom: 1.5rem; }
+    
+    .project-box {
+      background: linear-gradient(135deg, #fff, #f8f9fa); padding: 2rem; border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; margin-bottom: 2rem;
+      transition: all 0.3s ease; border-left: 5px solid #1dd89c;
+    }
+    .project-box:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
+    
+    .project-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .project-icon { font-size: 2.5rem; color: #1dd89c; flex-shrink: 0; }
+    .project-details h3 { font-size: 1.4rem; color: #06342d; margin: 0; }
+    .project-details p { color: #555; font-size: 1rem; line-height: 1.6; margin-top: 0.5rem; }
+    
+    .task-actions { position: absolute; top: 1.5rem; right: 1.5rem; display: flex; gap: 0.5rem; }
+    .task-btn {
+      padding: 0.5rem 1rem; border: none; border-radius: 8px; cursor: pointer;
+      font-weight: 600; transition: all 0.3s ease; font-size: 0.9rem;
+    }
+    .done-btn { background: #1dd89c; color: white; }
+    .edit-btn { background: #ffc107; color: white; }
+    .delete-btn { background: #dc3545; color: white; }
+    .task-btn:hover { transform: translateY(-2px); }
+    
+    .deadline { margin-top: 1rem; font-weight: bold; color: #444; }
+    .priority { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 15px; font-weight: 600; font-size: 0.8rem; margin-top: 0.5rem; }
+    .priority.high { background: #ffebee; color: #c62828; }
+    .priority.medium { background: #fff3e0; color: #ef6c00; }
+    .priority.low { background: #e8f5e8; color: #2e7d32; }
+    
+    .progress-container {
+      margin-top: 1rem; background: #e0e0e0; border-radius: 10px; height: 12px;
+      position: relative; overflow: hidden;
+    }
+    .progress-bar { background: linear-gradient(90deg, #1dd89c, #17c390); height: 100%; transition: width 0.4s ease; }
+    .progress-text { margin-top: 0.5rem; font-size: 0.9rem; color: #06342d; font-weight: 600; }
+    
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content {
+      background: white; margin: 5% auto; padding: 2rem; width: 80%; max-width: 600px;
+      border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .close { color: #aaa; float: right; font-size: 2rem; font-weight: bold; cursor: pointer; }
+    .close:hover { color: #000; }
+    
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .controls { flex-direction: column; align-items: stretch; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      PRO MANAGE
+    </div>
+    <div class="menu">
+      <a href="dash.html"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="PROJECT.html"><i class="fas fa-folder-open"></i> Projects</a>
+      <a href="BOARDS.html" class="active"><i class="fas fa-clipboard-list"></i> Board</a>
+      <a href="NOTIFICATION.html"><i class="fas fa-bell"></i> Notification</a>
+      <a href="PROFILE.html"><i class="fas fa-user"></i> Profile</a>
+      <a href="Settings.html"><i class="fas fa-cog"></i> Setting</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Task Board</h1>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3 id="totalTasks">2</h3>
+        <p>Total Tasks</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="completedTasks">0</h3>
+        <p>Completed</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="pendingTasks">2</h3>
+        <p>Pending</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="overdue">0</h3>
+        <p>Overdue</p>
+      </div>
+    </div>
+
+    <form class="create-task-form" id="createTaskForm">
+      <h2><i class="fas fa-plus-circle"></i> Create New Task</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="taskTitle">Task Title</label>
+          <input type="text" id="taskTitle" required placeholder="Enter task title" />
+        </div>
+        <div class="form-group">
+          <label for="assignedUser">Assign to User</label>
+          <input type="text" id="assignedUser" required placeholder="Enter user ID" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="deadline">Deadline</label>
+          <input type="date" id="deadline" required />
+        </div>
+        <div class="form-group">
+          <label for="priority">Priority</label>
+          <select id="priority" required>
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="taskInfo">Task Description</label>
+        <textarea id="taskInfo" rows="4" required placeholder="Enter detailed task description"></textarea>
+      </div>
+      <button type="submit"><i class="fas fa-plus"></i> Create Task</button>
+    </form>
+
+    <div class="controls">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search tasks..." id="searchInput" />
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+        <button class="filter-btn" data-filter="overdue">Overdue</button>
+      </div>
+    </div>
+
+    <div class="section" id="projectsSection">
+      <h2><i class="fas fa-tasks"></i> Active Tasks</h2>
+
+      <div class="project-box" data-status="pending">
+        <div class="task-actions">
+          <button class="task-btn edit-btn" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+          <button class="task-btn done-btn" onclick="markDone(this)"><i class="fas fa-check"></i></button>
+          <button class="task-btn delete-btn" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="project-header">
+          <div class="project-icon"><i class="fas fa-paint-brush"></i></div>
+          <div class="project-details">
+            <h3>Website Redesign for Small Business</h3>
+            <span class="priority medium">Medium Priority</span>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>Complete redesign of company website to improve user experience, branding, and mobile compatibility. Includes stakeholder interviews, wireframe development, and testing.</p>
+          <p class="deadline"><i class="fas fa-calendar"></i> <strong>Deadline:</strong> July 12, 2025</p>
+          <p><i class="fas fa-user"></i> <strong>Assigned to:</strong> USER001</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 65%;"></div>
+          </div>
+          <span class="progress-text">65% Complete</span>
+        </div>
+      </div>
+
+      <div class="project-box" data-status="pending">
+        <div class="task-actions">
+          <button class="task-btn edit-btn" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+          <button class="task-btn done-btn" onclick="markDone(this)"><i class="fas fa-check"></i></button>
+          <button class="task-btn delete-btn" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="project-header">
+          <div class="project-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="project-details">
+            <h3>Mobile App Launch for Startup</h3>
+            <span class="priority high">High Priority</span>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>Lead development and marketing launch of mobile app targeting young professionals. Manage design, development sprints, QA testing, and launch campaigns.</p>
+          <p class="deadline"><i class="fas fa-calendar"></i> <strong>Deadline:</strong> August 5, 2025</p>
+          <p><i class="fas fa-user"></i> <strong>Assigned to:</strong> USER002</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 40%;"></div>
+          </div>
+          <span class="progress-text">40% Complete</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Edit Task</h2>
+      <form id="editForm">
+        <input type="hidden" id="editIndex">
+        <label>Progress (%)</label>
+        <input type="range" id="editProgress" min="0" max="100" oninput="document.getElementById('progressValue').textContent = this.value + '%'">
+        <span id="progressValue">0%</span>
+        <br><br>
+        <button type="submit">Update Task</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let tasks = [];
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadExistingTasks();
+      updateStats();
+      
+      // Update task statuses every minute to check for overdue
+      setInterval(updateStats, 60000);
+      
+      // Add status legend
+      addStatusLegend();
+    });
+    
+    function addStatusLegend() {
+      const legend = document.createElement('div');
+      legend.className = 'status-legend';
+      legend.innerHTML = `
+        <h3>Task Status Guide:</h3>
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-color pending"></span>
+            <strong>Pending:</strong> Tasks not yet completed and within deadline
+          </div>
+          <div class="legend-item">
+            <span class="legend-color completed"></span>
+            <strong>Completed:</strong> Tasks marked as done (100% progress)
+          </div>
+          <div class="legend-item">
+            <span class="legend-color overdue"></span>
+            <strong>Overdue:</strong> Tasks past their deadline and not completed
+          </div>
+        </div>
+      `;
+      legend.style.cssText = `
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      `;
+      
+      const style = document.createElement('style');
+      style.textContent = `
+        .status-legend h3 { color: #06342d; margin-bottom: 1rem; font-size: 1.2rem; }
+        .legend-items { display: grid; gap: 0.75rem; }
+        .legend-item { display: flex; align-items: center; gap: 0.75rem; }
+        .legend-color { width: 20px; height: 20px; border-radius: 50%; }
+        .legend-color.pending { background: #1dd89c; }
+        .legend-color.completed { background: #28a745; }
+        .legend-color.overdue { background: #dc3545; }
+      `;
+      document.head.appendChild(style);
+      
+      const main = document.querySelector('.main');
+      const statsSection = document.querySelector('.stats');
+      main.insertBefore(legend, statsSection.nextSibling);
+    }
+    
+    function loadExistingTasks() {
+      const existingBoxes = document.querySelectorAll('.project-box');
+      existingBoxes.forEach((box, index) => {
+        const title = box.querySelector('h3').textContent;
+        const progress = parseInt(box.querySelector('.progress-bar').style.width) || 0;
+        const deadlineText = box.querySelector('.deadline').textContent;
+        const deadlineMatch = deadlineText.match(/Deadline:\s*(.+)/);
+        const deadline = deadlineMatch ? new Date(deadlineMatch[1]) : new Date();
+        
+        tasks.push({
+          title,
+          status: box.dataset.status || 'pending',
+          progress,
+          element: box,
+          deadline,
+          priority: 'medium' // default for existing tasks
+        });
+      });
+    }
+    
+    // Create Task
+    document.getElementById('createTaskForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('taskTitle').value.trim();
+      const info = document.getElementById('taskInfo').value.trim();
+      const deadline = document.getElementById('deadline').value;
+      const assignedUser = document.getElementById('assignedUser').value.trim();
+      const priority = document.getElementById('priority').value;
+      
+      if (!title || !info || !deadline || !assignedUser) {
+        alert('Please fill all fields.');
+        return;
+      }
+      
+      const icons = ['fas fa-tasks', 'fas fa-code', 'fas fa-chart-line', 'fas fa-cogs', 'fas fa-rocket'];
+      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+      
+      const projectBox = document.createElement('div');
+      projectBox.classList.add('project-box');
+      projectBox.dataset.status = 'pending';
+      
+      projectBox.innerHTML = `
+        <div class="task-actions">
+          <button class="task-btn edit-btn" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+          <button class="task-btn done-btn" onclick="markDone(this)"><i class="fas fa-check"></i></button>
+          <button class="task-btn delete-btn" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="project-header">
+          <div class="project-icon"><i class="${randomIcon}"></i></div>
+          <div class="project-details">
+            <h3>${title}</h3>
+            <span class="priority ${priority}">${priority.charAt(0).toUpperCase() + priority.slice(1)} Priority</span>
+          </div>
+        </div>
+        <div class="project-details">
+          <p>${info}</p>
+          <p class="deadline"><i class="fas fa-calendar"></i> <strong>Deadline:</strong> ${new Date(deadline).toLocaleDateString()}</p>
+          <p><i class="fas fa-user"></i> <strong>Assigned to:</strong> ${assignedUser}</p>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 0%;"></div>
+          </div>
+          <span class="progress-text">0% Complete</span>
+        </div>
+      `;
+      
+      document.getElementById('projectsSection').appendChild(projectBox);
+      tasks.push({
+        title,
+        status: 'pending',
+        progress: 0,
+        element: projectBox,
+        deadline: new Date(deadline), // Store actual deadline date
+        priority
+      });
+      
+      document.getElementById('createTaskForm').reset();
+      updateStats();
+      projectBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.project-box').forEach(box => {
+        const text = box.textContent.toLowerCase();
+        box.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    });
+    
+    // Filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.project-box').forEach(box => {
+          if (filter === 'all' || box.dataset.status === filter) {
+            box.style.display = 'block';
+          } else {
+            box.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // Task actions
+    function markDone(btn) {
+      const box = btn.closest('.project-box');
+      const progressBar = box.querySelector('.progress-bar');
+      const progressText = box.querySelector('.progress-text');
+      
+      // Update status and visual indicators
+      box.dataset.status = 'completed';
+      progressBar.style.width = '100%';
+      progressText.textContent = '100% Complete';
+      box.style.opacity = '0.8';
+      box.style.borderLeft = '5px solid #28a745';
+      
+      // Add completed badge
+      const existingBadge = box.querySelector('.completed-badge, .overdue-badge');
+      if (existingBadge) existingBadge.remove();
+      
+      const badge = document.createElement('span');
+      badge.className = 'completed-badge';
+      badge.innerHTML = '<i class="fas fa-check-circle"></i> COMPLETED';
+      badge.style.cssText = 'background: #28a745; color: white; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.8rem; font-weight: bold; margin-left: 1rem;';
+      box.querySelector('.project-details h3').appendChild(badge);
+      
+      // Update task data
+      const task = tasks.find(t => t.element === box);
+      if (task) {
+        task.status = 'completed';
+        task.progress = 100;
+      }
+      
+      // Change button to "Undo" functionality
+      btn.innerHTML = '<i class="fas fa-undo"></i>';
+      btn.title = 'Mark as Pending';
+      btn.onclick = () => undoComplete(btn);
+      
+      updateStats();
+      
+      // Show completion animation
+      box.style.transform = 'scale(1.02)';
+      setTimeout(() => {
+        box.style.transform = 'scale(1)';
+      }, 200);
+    }
+    
+    function undoComplete(btn) {
+      const box = btn.closest('.project-box');
+      const task = tasks.find(t => t.element === box);
+      
+      // Reset to pending status
+      box.dataset.status = 'pending';
+      box.style.opacity = '1';
+      box.style.borderLeft = '5px solid #1dd89c';
+      
+      // Remove completed badge
+      const badge = box.querySelector('.completed-badge');
+      if (badge) badge.remove();
+      
+      // Reset progress (you might want to restore previous progress instead)
+      const progressBar = box.querySelector('.progress-bar');
+      const progressText = box.querySelector('.progress-text');
+      const previousProgress = task ? task.progress : 0;
+      progressBar.style.width = previousProgress + '%';
+      progressText.textContent = previousProgress + '% Complete';
+      
+      // Update task data
+      if (task) {
+        task.status = 'pending';
+      }
+      
+      // Change button back to "Mark Done"
+      btn.innerHTML = '<i class="fas fa-check"></i>';
+      btn.title = 'Mark as Done';
+      btn.onclick = () => markDone(btn);
+      
+      updateStats();
+    }
+    
+    function deleteTask(btn) {
+      if (confirm('Are you sure you want to delete this task?')) {
+        const box = btn.closest('.project-box');
+        const taskIndex = tasks.findIndex(t => t.element === box);
+        if (taskIndex > -1) tasks.splice(taskIndex, 1);
+        box.remove();
+        updateStats();
+      }
+    }
+    
+    function editTask(btn) {
+      const box = btn.closest('.project-box');
+      const currentProgress = parseInt(box.querySelector('.progress-bar').style.width) || 0;
+      
+      document.getElementById('editProgress').value = currentProgress;
+      document.getElementById('progressValue').textContent = currentProgress + '%';
+      document.getElementById('editModal').style.display = 'block';
+      
+      document.getElementById('editForm').onsubmit = (e) => {
+        e.preventDefault();
+        const newProgress = document.getElementById('editProgress').value;
+        const progressBar = box.querySelector('.progress-bar');
+        const progressText = box.querySelector('.progress-text');
+        
+        progressBar.style.width = newProgress + '%';
+        progressText.textContent = newProgress + '% Complete';
+        
+        const task = tasks.find(t => t.element === box);
+        if (task) task.progress = parseInt(newProgress);
+        
+        document.getElementById('editModal').style.display = 'none';
+        updateStats();
+      };
+    }
+    
+    // Modal close
+    document.querySelector('.close').onclick = () => {
+      document.getElementById('editModal').style.display = 'none';
+    };
+    
+    window.onclick = (e) => {
+      const modal = document.getElementById('editModal');
+      if (e.target === modal) modal.style.display = 'none';
+    };
+    
+    function updateStats() {
+      // Update task statuses first
+      updateTaskStatuses();
+      
+      const total = tasks.length;
+      const completed = tasks.filter(t => t.status === 'completed').length;
+      const overdue = tasks.filter(t => t.status === 'overdue').length;
+      const pending = tasks.filter(t => t.status === 'pending').length;
+      
+      document.getElementById('totalTasks').textContent = total;
+      document.getElementById('completedTasks').textContent = completed;
+      document.getElementById('pendingTasks').textContent = pending;
+      document.getElementById('overdue').textContent = overdue;
+    }
+    
+    function updateTaskStatuses() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+      
+      tasks.forEach(task => {
+        if (task.status === 'completed') return; // Don't change completed tasks
+        
+        const deadlineText = task.element.querySelector('.deadline').textContent;
+        const deadlineMatch = deadlineText.match(/Deadline:\s*(.+)/);
+        
+        if (deadlineMatch) {
+          const deadlineDate = new Date(deadlineMatch[1]);
+          deadlineDate.setHours(0, 0, 0, 0);
+          
+          if (deadlineDate < today) {
+            task.status = 'overdue';
+            task.element.dataset.status = 'overdue';
+            // Add visual indicator for overdue
+            task.element.style.borderLeft = '5px solid #dc3545';
+            task.element.querySelector('.deadline').style.color = '#dc3545';
+            
+            // Add overdue badge if not already present
+            if (!task.element.querySelector('.overdue-badge')) {
+              const badge = document.createElement('span');
+              badge.className = 'overdue-badge';
+              badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> OVERDUE';
+              badge.style.cssText = 'background: #dc3545; color: white; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.8rem; font-weight: bold; margin-left: 1rem;';
+              task.element.querySelector('.project-details h3').appendChild(badge);
+            }
+          } else {
+            task.status = 'pending';
+            task.element.dataset.status = 'pending';
+            task.element.style.borderLeft = '5px solid #1dd89c';
+            task.element.querySelector('.deadline').style.color = '#444';
+            
+            // Remove overdue badge if present
+            const badge = task.element.querySelector('.overdue-badge');
+            if (badge) badge.remove();
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

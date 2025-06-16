@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ProManage Profile</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f9f9f9;
+      color: #1E1E1E;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+      user-select: none;
+    }
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      color: #1dd89c;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu a {
+      background-color: #ffffff11;
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .sidebar .menu a i {
+      font-size: 1.2rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar .menu a.active,
+    .sidebar .menu a:hover {
+      background-color: #1dd89c;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem 3rem;
+      background-color: #fff;
+      overflow-y: auto;
+    }
+
+    .header-image {
+      width: 100%;
+      max-width: 900px;
+      height: 300px;
+      background: url('https://i.pinimg.com/736x/19/f9/58/19f958b3f58d70f4977cc09e905c8f29.jpg') center/cover no-repeat;
+      margin: 0 auto 20px;
+      border-radius: 15px;
+    }
+
+    .avatar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: -90px;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #change-photo-btn {
+      margin-top: 10px;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      border: 1px solid #06342d;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      display: none;
+    }
+
+    #change-photo-btn:hover {
+      background-color: #06342d;
+      color: white;
+    }
+
+    .user-info {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .user-name {
+      font-size: 2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #06342d;
+    }
+
+    .user-email,
+    .user-title {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .personal-info-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid #eee;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1E1E1E;
+    }
+
+    .edit-button {
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      border: 1px solid #06342d;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    .edit-button:hover {
+      background: #06342d;
+      color: #fff;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-value input,
+    .info-value textarea {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #f9f9f9;
+      resize: none;
+      transition: border-color 0.3s;
+    }
+
+    .info-value input:focus,
+    .info-value textarea:focus {
+      outline: none;
+      border-color: #1dd89c;
+      background: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-image {
+        height: 200px;
+      }
+
+      .avatar {
+        width: 140px;
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      PRO MANAGE
+    </div>
+    <div class="menu">
+      <a href="dash.html"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="PROJECT.html"><i class="fas fa-folder-open"></i> Projects</a>
+      <a href="BOARDS.html"><i class="fas fa-clipboard-list"></i> Board</a>
+      <a href="NOTIFICATION.html"><i class="fas fa-bell"></i> Notification</a>
+      <a href="PROFILE.html" class="active"><i class="fas fa-user"></i> Profile</a>
+      <a href="Settings.html"><i class="fas fa-cog"></i> Setting</a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header-image"></div>
+
+    <div class="avatar-container">
+      <div class="avatar">
+        <img src="https://i.pinimg.com/736x/c9/33/b9/c933b92c61ec163f0c14d19b5e93ae9d.jpg" alt="Profile picture" id="avatar-img" />
+      </div>
+      <input type="file" id="profile-image-input" accept="image/*" style="display: none;" />
+      <button id="change-photo-btn">Change Photo</button>
+    </div>
+
+    <div class="user-info">
+      <h1 class="user-name" id="user-display-name">KIM Jisoo</h1>
+      <p class="user-email" id="user-display-email">sample@gmail.com</p>
+      <p class="user-title" id="user-display-bio">Designing Products That Users Love</p>
+    </div>
+
+    <div class="personal-info-card" id="profile-form">
+      <div class="card-header">
+        <h2 class="card-title">Personal Information</h2>
+        <button class="edit-button" id="edit-btn">Edit</button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">First Name</div>
+          <div class="info-value">
+            <input type="text" id="first-name" value="KIM" disabled />
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Last Name</div>
+          <div class="info-value">
+            <input type="text" id="last-name" value="Jisoo" disabled />
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Email address</div>
+          <div class="info-value">
+            <input type="email" id="email" value="sample@gmail.com" disabled />
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Phone</div>
+          <div class="info-value">
+            <input type="text" id="phone" value="+63 9585414 85" disabled />
+          </div>
+        </div>
+
+        <div class="info-item" style="grid-column: span 3;">
+          <div class="info-label">Bio</div>
+          <div class="info-value"><textarea id="bio" disabled>Designing Products That Users Love</textarea></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const editBtn = document.getElementById('edit-btn');
+    const inputs = document.querySelectorAll('#profile-form input, #profile-form textarea');
+    const imageInput = document.getElementById('profile-image-input');
+    const changePhotoBtn = document.getElementById('change-photo-btn');
+    const avatarImg = document.getElementById('avatar-img');
+
+    let isEditing = false;
+
+    editBtn.addEventListener('click', () => {
+      isEditing = !isEditing;
+      inputs.forEach(input => input.disabled = !isEditing);
+      editBtn.textContent = isEditing ? 'Save' : 'Edit';
+      changePhotoBtn.style.display = isEditing ? 'inline-block' : 'none';
+
+      if (!isEditing) {
+        document.getElementById('user-display-name').textContent =
+          `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`;
+        document.getElementById('user-display-email').textContent =
+          document.getElementById('email').value;
+        document.getElementById('user-display-bio').textContent =
+          document.getElementById('bio').value;
+      }
+    });
+
+    changePhotoBtn.addEventListener('click', () => {
+      imageInput.click();
+    });
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          avatarImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProManage Admin Panel</title>
+
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (for dragon icon) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f9f9f9;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #06342d;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      color: #1dd89c;
+    }
+
+    .sidebar .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar .menu button {
+      background-color: #ffffff11;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-radius: 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .sidebar .menu button.active,
+    .sidebar .menu button:hover {
+      background-color: #1dd89c;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+      background-color: #fff;
+    }
+
+    .main h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #06342d;
+    }
+
+    .status-cards {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .status-cards .card {
+      flex: 1;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .card.assigned {
+      background-color: #22c55e;
+    }
+
+    .card.pending {
+      background-color: #facc15;
+      color: black;
+    }
+
+    .card.missing {
+      background-color: #ef4444;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-box {
+      padding: 1rem;
+      border-radius: 12px;
+      color: white;
+      position: relative;
+      min-height: 120px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .project-box.green {
+      background-color: #34d399;
+    }
+
+    .project-box.red {
+      background-color: #ef4444;
+    }
+
+    .project-box.darkred {
+      background-color: #b91c1c;
+    }
+
+    .project-box.yellow {
+      background-color: #fbbf24;
+      color: black;
+    }
+
+    .avatar {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 32px;
+      background-color: #ddd;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-dragon"></i>
+      <span>PROMANAGE</span>
+    </div>
+    <div class="menu">
+      <button><span>🏠</span>Dashboard</button>
+      <button><span>📁</span>Projects</button>
+      <button class="active"><span>📋</span>Board</button>
+      <button><span>🔔</span>Notification</button>
+      <button><span>👤</span>Profile</button>
+      <button><span>⚙️</span>Setting</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Admin Panel</h1>
+
+    <!-- STATUS CARDS -->
+    <div class="status-cards">
+      <div class="card assigned">ASSIGNED PROJECTS: 1</div>
+      <div class="card pending">PENDING PROJECTS: 1</div>
+      <div class="card missing">MISSING PROJECTS: 2</div>
+    </div>
+
+    <!-- PROJECT BLOCKS -->
+    <div class="projects-grid">
+      <div class="project-box green">
+        <h3>"Event Planning for a Product Launch"</h3>
+        <div class="avatar"></div>
+      </div>
+
+      <div class="project-box red">
+        <h3>"Website Redesign for a Small Business"</h3>
+        <div class="avatar"></div>
+      </div>
+
+      <div class="project-box darkred">
+        <h3>"Sustainable Office Relocation"</h3>
+        <div class="avatar"></div>
+      </div>
+
+      <div class="project-box yellow">
+        <h3>"New Employee Onboarding Program"</h3>
+        <div class="avatar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar menu button active toggle
+    const menuButtons = document.querySelectorAll('.menu button');
+    menuButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        menuButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
